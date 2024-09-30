@@ -1,8 +1,8 @@
 <img src="./docs/logo.png">
 
-# User Service Custom Adapter example for Nodeblocks Cloud
+# Auth Service Custom Adapter example for Nodeblocks Cloud
 
-This repository contains an example of a custom adapter for the User Service in Nodeblocks Cloud.
+This repository contains an example of a custom adapter for the Auth Service in Nodeblocks Cloud.
 All the templates are available in [this repository](https://github.com/basaldev/nodeblocks-cloud-custom-adapter-template) including the documentation.
 
 ## Installation

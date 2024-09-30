@@ -1,7 +1,7 @@
 {
-  "name": "nodeblocks-cloud-user-custom-adapter-example",
+  "name": "nodeblocks-cloud-custom-adapter-example",
   "version": "2.0.0",
-  "description": "Nodeblocks User Service Custom Adapter Example",
+  "description": "Nodeblocks Auth Service Custom Adapter for NBC",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist",
@@ -12,11 +12,11 @@
   "author": "Basal Inc.",
   "license": "UNLICENSED",
   "dependencies": {
-    "@basaldev/blocks-backend-sdk": "^2.9.0",
-    "@basaldev/blocks-user-service": "2.3.0"
+    "@basaldev/blocks-auth-service": "^4.3.1",
+    "@basaldev/blocks-backend-sdk": "^3.3.0"
   },
   "devDependencies": {
-    "@basaldev/nodeblocks-cloud-sdk": "^0.2.2",
+    "@basaldev/nodeblocks-cloud-sdk": "^0.4.0",
     "typescript": "^5.4.5"
   }
 }

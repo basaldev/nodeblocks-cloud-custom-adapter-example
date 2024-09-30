@@ -1,36 +1,47 @@
 import * as sdk from "@basaldev/blocks-backend-sdk";
-import { defaultAdapter } from "@basaldev/blocks-user-service";
-import { isAdult } from "./utils";
+import { defaultAdapter } from "@basaldev/blocks-auth-service";
+
+export interface AuthAdapterHandlerResponse extends sdk.adapter.AdapterHandlerResponse {
+  data: {
+    userId: string;
+  }
+}
+
+export interface DecryptedUserAccessTokenInfo extends sdk.crypto.UserAccessTokenInfo {
+  exp: number;
+}
 
 /**
  * A hook function called after the adapter is created
  * This hook can be used to customize the adapter instance
  * 
- * @param {defaultAdapter.UserDefaultAdapter} adapter Default adapter instance
- * @returns {defaultAdapter.UserDefaultAdapter} Updated adapter instance
+ * @param {defaultAdapter.AuthDefaultAdapter} adapter Default adapter instance
+ * @returns {defaultAdapter.AuthDefaultAdapter} Updated adapter instance
  */
-export function adapterCreated(adapter: defaultAdapter.UserDefaultAdapter): defaultAdapter.UserDefaultAdapter {
-  const ageOfMajority = process.env.ADAPTER_CUSTOM_AGE_OF_MAJORITY
-    ? parseInt(process.env.ADAPTER_CUSTOM_AGE_OF_MAJORITY)
-    : 18;
-
+export function adapterCreated(adapter: defaultAdapter.AuthDefaultAdapter): defaultAdapter.AuthDefaultAdapter {
   /**
-   * Customize validators for createUser handler
+   * Customize handlers and validators for an existing endpoint here
    * https://docs.nodeblocks.dev/docs/how-tos/customization/customizing-adapters#customizing-handlers-and-validators-for-an-existing-endpoint
    */
-  const updatedAdapter = sdk.adapter.setValidator(adapter, 'createUser', 'ageValidator', async (logger, context) => {
-    logger.info('ageValidator');
-    const birthday = context.body.customFields?.birthday;
-    if (!birthday || !isAdult(birthday, ageOfMajority)) {
-      logger.warn('ageValidator: birthday is undefined or not adult.');
-      throw new sdk.NBError({
-        code: 'ageValidator',
-        httpCode: 400,
-        message: `your age is under ${ageOfMajority}, according to your birthday: ${birthday}`,
-      });
-    }
-    return 200;
-  });
 
+  const updatedAdapter = sdk.adapter.modifyHandler(adapter, 'checkToken', (oldHandler) => {
+    const newHandler = async (logger: sdk.Logger, context: sdk.adapter.AdapterHandlerContext) => {
+      const user = await oldHandler(logger, context) as AuthAdapterHandlerResponse;
+      const authSecrets = { 
+                            authEncSecret: process.env.ADAPTER_AUTH_ENC_SECRET as string, 
+                            authSignSecret: process.env.ADAPTER_AUTH_SIGN_SECRET as string 
+                          };
+      const token = context.body.token;
+      const decrypted = sdk.crypto.decryptAndVerifyJWT(authSecrets, token) as DecryptedUserAccessTokenInfo
+      return {
+        ...user,
+        data: {
+          userId: user.data.userId,
+          exp: decrypted.exp,
+        }
+      };
+    };
+    return newHandler
+  });
   return updatedAdapter;
 }
