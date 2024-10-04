@@ -4,7 +4,7 @@
  * @param ageOfMajority - The age of an adult (default is 18)
  * @returns boolean
  */
-export function isAdult(birthday: string, ageOfMajority = 18): boolean {
+export function isAdult(birthday, ageOfMajority = 18) {
   const birthDate = new Date(birthday);
   const today = new Date();
   const yearDiff = today.getFullYear() - birthDate.getFullYear();

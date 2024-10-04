@@ -1,15 +1,14 @@
 import * as sdk from "@basaldev/blocks-backend-sdk";
-import { defaultAdapter } from "@basaldev/blocks-user-service";
 import { isAdult } from "./utils";
 
 /**
  * A hook function called after the adapter is created
  * This hook can be used to customize the adapter instance
  * 
- * @param {defaultAdapter.UserDefaultAdapter} adapter Default adapter instance
- * @returns {defaultAdapter.UserDefaultAdapter} Updated adapter instance
+ * @param Default adapter instance
+ * @returns Updated adapter instance
  */
-export function adapterCreated(adapter: defaultAdapter.UserDefaultAdapter): defaultAdapter.UserDefaultAdapter {
+export function adapterCreated(adapter) {
   const ageOfMajority = process.env.ADAPTER_CUSTOM_AGE_OF_MAJORITY
     ? parseInt(process.env.ADAPTER_CUSTOM_AGE_OF_MAJORITY)
     : 18;
