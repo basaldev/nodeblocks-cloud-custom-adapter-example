@@ -1,5 +1,5 @@
-import * as sdk from "@basaldev/blocks-backend-sdk";
-import { isAdult } from "./utils";
+const sdk = require("@basaldev/blocks-backend-sdk");
+const { isAdult } = require("./utils");
 
 /**
  * A hook function called after the adapter is created
@@ -8,7 +8,7 @@ import { isAdult } from "./utils";
  * @param Default adapter instance
  * @returns Updated adapter instance
  */
-export function adapterCreated(adapter) {
+function adapterCreated(adapter) {
   const ageOfMajority = process.env.ADAPTER_CUSTOM_AGE_OF_MAJORITY
     ? parseInt(process.env.ADAPTER_CUSTOM_AGE_OF_MAJORITY)
     : 18;
@@ -33,3 +33,5 @@ export function adapterCreated(adapter) {
 
   return updatedAdapter;
 }
+
+exports.adapterCreated = adapterCreated;
