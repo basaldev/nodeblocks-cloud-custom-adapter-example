@@ -8,7 +8,8 @@
       "description": "The Age used to check if the user is adult.",
       "type": "number",
       "name": "ADAPTER_CUSTOM_AGE_OF_MAJORITY",
-      "required": true,
+      "required": false,
+      "isSecret": false,
       "defaultValue": "18"
     }
   ]
