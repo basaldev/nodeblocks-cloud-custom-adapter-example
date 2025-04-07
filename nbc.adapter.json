@@ -6,8 +6,7 @@
     {
       "displayName": "Age of majority",
       "description": "The Age used to check if the user is adult.",
-      "type": "number",
-      "name": "ADAPTER_CUSTOM_AGE_OF_MAJORITY",
+      "type": "hoge",
       "required": false,
       "isSecret": false,
       "defaultValue": "18"
