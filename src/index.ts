@@ -108,7 +108,7 @@ export function beforeCreateService(currentConfigs: MessagingAppConfig): Messagi
  * This hook can be used to perform any post service creation tasks
  */
 export function serviceCreated(service: ReturnType<typeof createNodeblocksMessagingApp>) {
-  console.log('### Service created', service);
+  console.log('### Service created');
 }
 
 type StartServiceArgs = Parameters<ReturnType<typeof createNodeblocksMessagingApp>['startService']>;
@@ -159,6 +159,8 @@ export function beforeStartService(currentOptions: ServiceOpts): StartServiceArg
  * A hook function called after the service is started
  * This hook can be used to perform any post service starting tasks
  */
-export function serviceStarted(server: http.Server) {
-  console.log('### Service started', server);
+export async function serviceStarted(server: http.Server) {
+  console.log('### Service started');
+  // Stop staring the socket server
+  context.adapter.dependencies.socketAPI = undefined;
 }
